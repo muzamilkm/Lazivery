@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "263358934655",
+    "project_id": "lazivery",
+    "storage_bucket": "lazivery.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:263358934655:android:836ad7d67913aac495d94a",
+        "android_client_info": {
+          "package_name": "com.example.lazivery"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "263358934655-d8kd95csqpt48pkngjqq1t13c5j7rv1v.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD7jemgL37t5Jj-EAMID3QY9DPQejHrcy0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "263358934655-d8kd95csqpt48pkngjqq1t13c5j7rv1v.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
