@@ -7,8 +7,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import com.google.firebase.database.DataSnapshot;
@@ -19,7 +22,9 @@ import com.google.firebase.database.Logger;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class NewReqActivity extends AppCompatActivity {
 
@@ -45,8 +50,7 @@ public class NewReqActivity extends AppCompatActivity {
         });
     }
 
-    public void submitReq(DatabaseReference orderRef)
-    {
+    public void submitReq(DatabaseReference orderRef) {
         location = (EditText) findViewById(R.id.location_edit_text);
         String locationstr = location.getText().toString();
 
@@ -63,40 +67,34 @@ public class NewReqActivity extends AppCompatActivity {
         String paymethodstr = paymethod.getText().toString();
 
         if (!TextUtils.isEmpty(locationstr) && !TextUtils.isEmpty(paystr) && !TextUtils.isEmpty(itemstr) &&
-                !TextUtils.isEmpty(instructionstr) && !TextUtils.isEmpty(paymethodstr))
-        {
-            ArrayList<String> order = new ArrayList<>();
-            order.add(locationstr);
-            order.add(paystr);
-            order.add(itemstr);
-            order.add(instructionstr);
-            order.add(paymethodstr);
+                !TextUtils.isEmpty(instructionstr) && !TextUtils.isEmpty(paymethodstr)) {
+            String requestId = orderRef.push().getKey();
+            Map<String, Object> order = new HashMap<>();
+            order.put("id", requestId);
+            order.put("location", locationstr);
+            order.put("payment", paystr);
+            order.put("items", itemstr);
+            order.put("instructions", instructionstr);
+            order.put("method", paymethodstr);
 
-            orderRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    // Get the existing data at the location
-                    ArrayList<String> existingData = (ArrayList<String>) dataSnapshot.getValue();
-
-                    // Add the new data to the existing data
-                    if (existingData == null)
-                    {
-                        existingData = new ArrayList<String>();
-                    }
-                    existingData.addAll(order);
-
-                    // Save the updated data to the database
-                    orderRef.setValue(existingData);
-                }
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-                    // Handle the error
-                }
-            });
-        }
-        else
+            orderRef.child(requestId).setValue(order)
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            Toast.makeText(NewReqActivity.this, "Request sent successfully", Toast.LENGTH_SHORT).show();
+                            finish();
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(NewReqActivity.this, "Error while sending request", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+        } else {
             Toast.makeText(this, "Please fill all the fields", Toast.LENGTH_SHORT).show();
+        }
     }
+
 
 }
