@@ -13,7 +13,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 public class MainMenu extends AppCompatActivity {
     private ImageView profile, settings;
     private FloatingActionButton logout;
-    private Button createreq;
+    private Button createreq, checkreq;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,12 +46,10 @@ public class MainMenu extends AppCompatActivity {
         });
 
         settings = (ImageView) findViewById(R.id.settings_icon);
-        settings.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openSettings();
-            }
-        });
+        settings.setOnClickListener(v -> openSettings());
+
+        checkreq = findViewById(R.id.check_open_requests_button);
+        checkreq.setOnClickListener(v -> checkOpenRequests());
 
     }
 
@@ -72,6 +70,12 @@ public class MainMenu extends AppCompatActivity {
     public void openSettings()
     {
         Intent intent = new Intent(MainMenu.this, SettingsActivity.class);
+        startActivity(intent);
+    }
+
+    public void checkOpenRequests()
+    {
+        Intent intent = new Intent(MainMenu.this, CurrentActivity.class);
         startActivity(intent);
     }
 }
