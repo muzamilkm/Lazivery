@@ -24,9 +24,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:cardBackgroundColor="#5E5A5A"
-        app:cardCornerRadius="8dp"
         app:cardElevation="4dp"
         app:cardUseCompatPadding="true"
+        app:cardCornerRadius="14dp"
         android:layout_below="@id/newrequest_title"
         android:layout_margin="16dp">
 

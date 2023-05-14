@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
@@ -23,6 +24,7 @@ import java.util.List;
 public class CurrentActivity extends AppCompatActivity {
 
     private FirebaseRecyclerAdapter<Request, RequestAdapter.RequestViewHolder> mAdapter;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
 //    private RecyclerView mRecyclerView;
 //    private RequestAdapter mAdapter;
 //    private List<Request> mRequests;
@@ -30,6 +32,8 @@ public class CurrentActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_currentreq);
+
+
 
 //        mRecyclerView = findViewById(R.id.recycler_view);
 //        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -46,18 +50,35 @@ public class CurrentActivity extends AppCompatActivity {
         RecyclerView recyclerView = findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         mAdapter = new RequestAdapter(options);
-        recyclerView.setAdapter(mAdapter);
         requestsRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                Log.d("CurrentActivity", "Data changed: " + snapshot.toString());
-
+                List<Request> requestList = new ArrayList<>();
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    Request request = dataSnapshot.getValue(Request.class);
+                    if (request != null) {
+                        requestList.add(request);
+                    }
+                }
+                recyclerView.setAdapter(mAdapter);
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 Toast.makeText(CurrentActivity.this, "Database Error", Toast.LENGTH_SHORT).show();
             }
 
+        });
+
+        mSwipeRefreshLayout = findViewById(R.id.swipe_refresh_layout);
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                FirebaseRecyclerOptions<Request> options = new FirebaseRecyclerOptions.Builder<Request>()
+                        .setQuery(requestsRef, Request.class)
+                        .build();
+                mAdapter.updateOptions(options);
+                mSwipeRefreshLayout.setRefreshing(false);
+            }
         });
     }
 
@@ -73,5 +94,6 @@ public class CurrentActivity extends AppCompatActivity {
         super.onStop();
         mAdapter.stopListening();
     }
+
 }
 

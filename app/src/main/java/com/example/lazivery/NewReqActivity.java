@@ -70,7 +70,6 @@ public class NewReqActivity extends AppCompatActivity {
                 !TextUtils.isEmpty(instructionstr) && !TextUtils.isEmpty(paymethodstr)) {
             String requestId = orderRef.push().getKey();
             Map<String, Object> order = new HashMap<>();
-            order.put("id", requestId);
             order.put("location", locationstr);
             order.put("payment", paystr);
             order.put("items", itemstr);

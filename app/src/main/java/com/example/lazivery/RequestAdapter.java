@@ -1,6 +1,5 @@
 package com.example.lazivery;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,11 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 
-import java.util.List;
-
 public class RequestAdapter extends FirebaseRecyclerAdapter<Request, RequestAdapter.RequestViewHolder> {
-
-    private List<Request> mRequests;
 
     public RequestAdapter(@NonNull FirebaseRecyclerOptions<Request> options) {
         super(options);
@@ -33,11 +28,6 @@ public class RequestAdapter extends FirebaseRecyclerAdapter<Request, RequestAdap
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.cardview, parent, false);
         return new RequestViewHolder(view);
     }
-
-//    @Override
-//    public int getItemCount() {
-//        return mRequests.size();
-//    }
 
     public static class RequestViewHolder extends RecyclerView.ViewHolder {
 
@@ -62,7 +52,6 @@ public class RequestAdapter extends FirebaseRecyclerAdapter<Request, RequestAdap
             itemsTextView.setText(request.getItems());
             instructionsTextView.setText(request.getInstructions());
             methodTextView.setText(request.getMethod());
-//            Log.d("CurrentActivity", "Retrieved request: " + request.toString()); // add this log statement
         }
     }
 }

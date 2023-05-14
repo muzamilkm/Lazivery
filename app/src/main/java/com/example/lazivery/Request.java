@@ -10,8 +10,7 @@ public class Request {
 
     public Request() {}
 
-    public Request(String id, String location, String payment, String items, String instructions, String method) {
-        this.id = id;
+    public Request(String location, String payment, String items, String instructions, String method) {
         this.location = location;
         this.payment = payment;
         this.items = items;
