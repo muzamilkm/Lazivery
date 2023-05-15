@@ -2,6 +2,7 @@ package com.example.lazivery;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -24,7 +25,7 @@ import java.util.List;
 public class CurrentActivity extends AppCompatActivity {
 
     private FirebaseRecyclerAdapter<Request, RequestAdapter.RequestViewHolder> mAdapter;
-    private SwipeRefreshLayout mSwipeRefreshLayout;
+    private RelativeLayout relativeLayout;
 //    private RecyclerView mRecyclerView;
 //    private RequestAdapter mAdapter;
 //    private List<Request> mRequests;
@@ -46,6 +47,9 @@ public class CurrentActivity extends AppCompatActivity {
         FirebaseRecyclerOptions<Request> options = new FirebaseRecyclerOptions.Builder<Request>()
                 .setQuery(requestsRef, Request.class)
                 .build();
+
+//        if (options != null)
+//            mAdapter.updateOptions(options);
 
         RecyclerView recyclerView = findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -69,17 +73,8 @@ public class CurrentActivity extends AppCompatActivity {
 
         });
 
-        mSwipeRefreshLayout = findViewById(R.id.swipe_refresh_layout);
-        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                FirebaseRecyclerOptions<Request> options = new FirebaseRecyclerOptions.Builder<Request>()
-                        .setQuery(requestsRef, Request.class)
-                        .build();
-                mAdapter.updateOptions(options);
-                mSwipeRefreshLayout.setRefreshing(false);
-            }
-        });
+        relativeLayout = findViewById(R.id.rel_layout);
+
     }
 
     @Override
@@ -92,7 +87,8 @@ public class CurrentActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        mAdapter.stopListening();
+        if (mAdapter != null)
+            mAdapter.stopListening();
     }
 
 }
