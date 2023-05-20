@@ -3,6 +3,7 @@ package com.example.lazivery;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -13,6 +14,7 @@ import com.firebase.ui.database.FirebaseRecyclerOptions;
 
 public class RequestAdapter extends FirebaseRecyclerAdapter<Request, RequestAdapter.RequestViewHolder> {
 
+    private Button acceptreq;
     public RequestAdapter(@NonNull FirebaseRecyclerOptions<Request> options) {
         super(options);
     }
@@ -20,6 +22,7 @@ public class RequestAdapter extends FirebaseRecyclerAdapter<Request, RequestAdap
     @Override
     public void onBindViewHolder(@NonNull RequestViewHolder holder, int position, @NonNull Request model) {
         holder.bind(model);
+
     }
 
     @NonNull

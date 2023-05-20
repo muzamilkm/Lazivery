@@ -2,6 +2,7 @@ package com.example.lazivery;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
@@ -33,6 +34,7 @@ public class CurrentActivity extends AppCompatActivity {
         setContentView(R.layout.activity_currentreq);
 
         DatabaseReference requestsRef = FirebaseDatabase.getInstance("https://lazivery-default-rtdb.asia-southeast1.firebasedatabase.app").getReference("requests");
+
 
         FirebaseRecyclerOptions<Request> options = new FirebaseRecyclerOptions.Builder<Request>()
                 .setQuery(requestsRef, Request.class)
