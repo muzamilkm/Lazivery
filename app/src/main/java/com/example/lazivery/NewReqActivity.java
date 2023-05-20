@@ -66,6 +66,8 @@ public class NewReqActivity extends AppCompatActivity {
         paymethod = (EditText) findViewById(R.id.payment_method);
         String paymethodstr = paymethod.getText().toString();
 
+        String status = "open";
+
         if (!TextUtils.isEmpty(locationstr) && !TextUtils.isEmpty(paystr) && !TextUtils.isEmpty(itemstr) &&
                 !TextUtils.isEmpty(instructionstr) && !TextUtils.isEmpty(paymethodstr)) {
             String requestId = orderRef.push().getKey();
@@ -75,6 +77,7 @@ public class NewReqActivity extends AppCompatActivity {
             order.put("items", itemstr);
             order.put("instructions", instructionstr);
             order.put("method", paymethodstr);
+            order.put("status", status);
 
             orderRef.child(requestId).setValue(order)
                     .addOnSuccessListener(new OnSuccessListener<Void>() {

@@ -26,30 +26,17 @@ public class CurrentActivity extends AppCompatActivity {
 
     private FirebaseRecyclerAdapter<Request, RequestAdapter.RequestViewHolder> mAdapter;
     private RelativeLayout relativeLayout;
-//    private RecyclerView mRecyclerView;
-//    private RequestAdapter mAdapter;
-//    private List<Request> mRequests;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_currentreq);
-
-
-
-//        mRecyclerView = findViewById(R.id.recycler_view);
-//        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-//        mRequests = new ArrayList<>();
-//        mAdapter = new RequestAdapter(mRequests);
-//        mRecyclerView.setAdapter(mAdapter);
 
         DatabaseReference requestsRef = FirebaseDatabase.getInstance("https://lazivery-default-rtdb.asia-southeast1.firebasedatabase.app").getReference("requests");
 
         FirebaseRecyclerOptions<Request> options = new FirebaseRecyclerOptions.Builder<Request>()
                 .setQuery(requestsRef, Request.class)
                 .build();
-
-//        if (options != null)
-//            mAdapter.updateOptions(options);
 
         RecyclerView recyclerView = findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
