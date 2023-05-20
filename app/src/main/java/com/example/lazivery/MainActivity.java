@@ -75,7 +75,10 @@ public class MainActivity extends AppCompatActivity {
                             // User is successfully authenticated
                             FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                             if (user != null) {
-                                openMainMenu();
+                                if (user.isEmailVerified())
+                                    openMainMenu();
+                                else
+                                    Toast.makeText(MainActivity.this, "Email is not verified", Toast.LENGTH_SHORT).show();
                             }
                         } else {
                             // Authentication failed
@@ -85,8 +88,6 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }
                 });
-
-
     }
 
     public void openMainMenu()
