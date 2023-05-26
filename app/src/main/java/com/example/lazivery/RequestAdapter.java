@@ -1,5 +1,6 @@
 package com.example.lazivery;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,10 +12,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class RequestAdapter extends FirebaseRecyclerAdapter<Request, RequestAdapter.RequestViewHolder> {
 
-    private Button acceptreq;
     public RequestAdapter(@NonNull FirebaseRecyclerOptions<Request> options) {
         super(options);
     }
@@ -22,7 +27,41 @@ public class RequestAdapter extends FirebaseRecyclerAdapter<Request, RequestAdap
     @Override
     public void onBindViewHolder(@NonNull RequestViewHolder holder, int position, @NonNull Request model) {
         holder.bind(model);
+        Button acceptButton = holder.itemView.findViewById(R.id.acceptreqbtn);
+        acceptButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Handle the accept button click for the specific request at the given position
+                onAcceptButtonClick(holder.getAbsoluteAdapterPosition());
+            }
+        });
+    }
+    public void onAcceptButtonClick(int position)
+    {
+        DatabaseReference requestRef = FirebaseDatabase.getInstance("https://lazivery-default-rtdb.asia-southeast1.firebasedatabase.app").getReference().child("requests");
+        Log.d("reached onacceptbuttonclick", "you're clicking position "+position);
 
+
+        requestRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                int i = 0;
+                for (DataSnapshot childSnapshot : snapshot.getChildren()) {
+                    if (i == position) {
+                        String creatorId = childSnapshot.getKey(); // Retrieve the creator ID
+
+                        break;
+                    }
+                    i++;
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                // Handle any errors
+            }
+        });
     }
 
     @NonNull
@@ -31,7 +70,6 @@ public class RequestAdapter extends FirebaseRecyclerAdapter<Request, RequestAdap
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.cardview, parent, false);
         return new RequestViewHolder(view);
     }
-
     public static class RequestViewHolder extends RecyclerView.ViewHolder {
 
         private TextView locationTextView;
