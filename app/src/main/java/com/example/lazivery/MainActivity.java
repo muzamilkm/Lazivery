@@ -24,6 +24,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.Arrays;
 import java.util.List;
@@ -75,10 +76,10 @@ public class MainActivity extends AppCompatActivity {
                             // User is successfully authenticated
                             FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                             if (user != null) {
-                                if (user.isEmailVerified())
+//                                if (user.isEmailVerified())
                                     openMainMenu();
-                                else
-                                    Toast.makeText(MainActivity.this, "Email is not verified", Toast.LENGTH_SHORT).show();
+//                                else
+//                                    Toast.makeText(MainActivity.this, "Email is not verified", Toast.LENGTH_SHORT).show();
                             }
                         } else {
                             // Authentication failed
