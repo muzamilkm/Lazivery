@@ -5,6 +5,15 @@
     android:layout_height="match_parent"
     android:background="@drawable/background_gradient">
 
+    <ImageView
+        android:id="@+id/logoview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/logo"
+        android:layout_above="@id/login_card"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="20dp"/>
+
     <androidx.cardview.widget.CardView
         android:id="@+id/login_card"
         android:layout_width="match_parent"
@@ -70,6 +79,6 @@
         android:textColor="@android:color/white"
         android:textStyle="bold"
         android:fontFamily="@font/poppinsl"
-        app:backgroundTint="@color/buttonbglight" />
+        app:backgroundTint="@color/buttonbggreen" />
 
 </RelativeLayout>
