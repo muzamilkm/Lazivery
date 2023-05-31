@@ -45,6 +45,8 @@ public class RequestAdapter extends FirebaseRecyclerAdapter<Request, RequestAdap
 
     String creatorId, acceptorId;
     String fullName, phoneNumber;
+
+    String creatorphone;
     public RequestAdapter(@NonNull FirebaseRecyclerOptions<Request> options) {
         super(options);
     }
@@ -83,9 +85,6 @@ public class RequestAdapter extends FirebaseRecyclerAdapter<Request, RequestAdap
     public void onAcceptButtonClick(int position)
     {
         DatabaseReference requestRef = FirebaseDatabase.getInstance("https://lazivery-default-rtdb.asia-southeast1.firebasedatabase.app").getReference().child("requests");
-        Log.d("reached onacceptbuttonclick", "you're clicking position "+position);
-
-
         requestRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -106,16 +105,35 @@ public class RequestAdapter extends FirebaseRecyclerAdapter<Request, RequestAdap
                         DatabaseReference usersRef = FirebaseDatabase.getInstance("https://lazivery-default-rtdb.asia-southeast1.firebasedatabase.app").getReference().child("users");
                         String userId = acceptorId;
                         DatabaseReference userRef = usersRef.child(userId);
-                        Log.d("acceptor id:", "acceptor id: "+userId);
+
+                        DatabaseReference creatorRef = usersRef.child(creatorId);
+
+                        creatorRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @SuppressLint("RestrictedApi")
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                if (snapshot.exists())
+                                {
+                                    creatorphone = snapshot.child("phoneNumber").getValue(String.class);
+                                    Toast.makeText(getApplicationContext(), "Request accepted! Contact: "+creatorphone, Toast.LENGTH_LONG).show();
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                        });
 
                         userRef.addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                 if (dataSnapshot.exists()) {
+
+
                                     fullName = dataSnapshot.child("fullName").getValue(String.class);
                                     phoneNumber = dataSnapshot.child("phoneNumber").getValue(String.class);
 
-                                    Log.d("acceptor:", "acceptor phone and name: "+fullName + phoneNumber);
 
                                     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
