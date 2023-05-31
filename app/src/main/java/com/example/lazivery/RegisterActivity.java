@@ -44,11 +44,14 @@ public class RegisterActivity extends AppCompatActivity {
                 emailstr = email.getText().toString();
                 passwordstr = password.getText().toString();
 
-                if (!namestr.isEmpty() || !phonestr.isEmpty() || !emailstr.isEmpty() || !passwordstr.isEmpty()) {
-                    startRegflow(emailstr, passwordstr);
-                    Toast.makeText(RegisterActivity.this, "Registration successful!", Toast.LENGTH_SHORT).show();
-                    finish();
-                } else {
+                if (!namestr.isEmpty() && !phonestr.isEmpty() && !emailstr.isEmpty() && !passwordstr.isEmpty()) {
+
+                        if (emailstr.contains("@") && !emailstr.isEmpty())
+                            startRegflow(emailstr, passwordstr);
+                        else if (!emailstr.isEmpty())
+                            Toast.makeText(RegisterActivity.this, "Invalid email", Toast.LENGTH_SHORT).show();
+                    }
+                else {
                     Toast.makeText(RegisterActivity.this, "Please fill all the fields", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -58,37 +61,53 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     public void startRegflow(String email, String password) {
-        FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful())
-                        {
-                            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                            if (user != null)
-                            {
-                                String uid = user.getUid();
-                                saveAdditionalUserInfo(uid, namestr, phonestr);
-                                Toast.makeText(RegisterActivity.this, "Registration successful!", Toast.LENGTH_SHORT).show();
-                                finish();
+
+        if (!email.isEmpty() && !password.isEmpty()) {
+            FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, password)
+                    .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()) {
+                                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                                if (user != null) {
+                                    String uid = user.getUid();
+                                    saveAdditionalUserInfo(uid, namestr, phonestr);
+                                    if (saveAdditionalUserInfo(uid, namestr, phonestr) == 1);
+                                    {
+                                        Toast.makeText(RegisterActivity.this, "Registration successful!", Toast.LENGTH_SHORT).show();
+                                        finish();
+                                    }
+                                } else {
+                                    Toast.makeText(RegisterActivity.this, "Failed to retrieve user information", Toast.LENGTH_SHORT).show();
+                                }
                             } else {
-                                Toast.makeText(RegisterActivity.this, "Failed to retrieve user information", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(RegisterActivity.this, "Registration failed", Toast.LENGTH_SHORT).show();
                             }
-                        } else {
-                            Toast.makeText(RegisterActivity.this, "Registration failed: " + task.getException(), Toast.LENGTH_SHORT).show();
                         }
-                    }
-                });
+                    });
+        }
     }
 
-    public void saveAdditionalUserInfo(String uid, String name, String phone) {
+    public int saveAdditionalUserInfo(String uid, String name, String phone) {
+        char[] namearr = name.toCharArray();
+        for (char c : namearr) {
+            if (Character.isDigit(c)) {
+                Toast.makeText(RegisterActivity.this, "Invalid name", Toast.LENGTH_SHORT).show();
+                return 0;
+            }
+        }
+        if (phonestr.toCharArray().length != 11)
+        {
+            Toast.makeText(this, "Invalid phone number", Toast.LENGTH_SHORT).show();
+            return 0;
+        }
         DatabaseReference usersRef = FirebaseDatabase.getInstance("https://lazivery-default-rtdb.asia-southeast1.firebasedatabase.app")
                 .getReference().child("users");
         DatabaseReference userRef = usersRef.child(uid);
-
         userRef.child("fullName").setValue(name);
         userRef.child("phoneNumber").setValue(phone);
-
+        
+        return 1;
     }
 
 }

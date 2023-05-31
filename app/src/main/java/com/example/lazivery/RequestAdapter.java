@@ -25,6 +25,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -50,15 +51,34 @@ public class RequestAdapter extends FirebaseRecyclerAdapter<Request, RequestAdap
 
     @Override
     public void onBindViewHolder(@NonNull RequestViewHolder holder, int position, @NonNull Request model) {
+
+
         holder.bind(model);
-        Button acceptButton = holder.itemView.findViewById(R.id.acceptreqbtn);
-        acceptButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Handle the accept button click for the specific request at the given position
-                onAcceptButtonClick(holder.getAbsoluteAdapterPosition());
-            }
-        });
+        Log.d("status: ", "status: "+model.getStatus());
+
+        String requestId = getRef(position).getKey();
+
+        // Check if the request has been accepted
+        if (model.getStatus().equals("accepted")) {
+            // Hide or disable views related to accepted requests
+            holder.itemView.setVisibility(View.GONE);
+            holder.itemView.setLayoutParams(new RecyclerView.LayoutParams(0, 0));
+        } else {
+            // Show views for non-accepted requests
+            holder.itemView.setVisibility(View.VISIBLE);
+            holder.itemView.setLayoutParams(new RecyclerView.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT));
+            Button acceptButton = holder.itemView.findViewById(R.id.acceptreqbtn);
+            acceptButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // Handle the accept button click for the specific request at the given position
+                    onAcceptButtonClick(holder.getAbsoluteAdapterPosition());
+                }
+            });
+        }
+
     }
     public void onAcceptButtonClick(int position)
     {
@@ -154,8 +174,7 @@ public class RequestAdapter extends FirebaseRecyclerAdapter<Request, RequestAdap
                             }
                         });
 
-
-
+                        requestRef.child(creatorId).child("status").setValue("accepted");
                         break;
                     }
                     i++;

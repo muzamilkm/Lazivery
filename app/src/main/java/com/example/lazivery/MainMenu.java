@@ -1,5 +1,7 @@
 package com.example.lazivery;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -11,7 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class MainMenu extends AppCompatActivity {
-    private ImageView profile, settings;
+    private ImageView profile;
     private FloatingActionButton logout;
     private Button createreq, checkreq;
 
@@ -45,12 +47,14 @@ public class MainMenu extends AppCompatActivity {
             }
         });
 
-        settings = (ImageView) findViewById(R.id.settings_icon);
-        settings.setOnClickListener(v -> openSettings());
-
         checkreq = findViewById(R.id.check_open_requests_button);
         checkreq.setOnClickListener(v -> checkOpenRequests());
 
+    }
+    @Override
+    public void onBackPressed()
+    {
+        showExitPrompt();
     }
 
     public void openProfile()
@@ -65,8 +69,6 @@ public class MainMenu extends AppCompatActivity {
         startActivity(intent);
     }
 
-
-
     public void openSettings()
     {
         Intent intent = new Intent(MainMenu.this, SettingsActivity.class);
@@ -77,5 +79,25 @@ public class MainMenu extends AppCompatActivity {
     {
         Intent intent = new Intent(MainMenu.this, CurrentActivity.class);
         startActivity(intent);
+    }
+
+    private void showExitPrompt() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this,R.style.AlertDialogStyle);
+        builder.setMessage("Are you sure you want to exit?")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        System.exit(0); // Exit the app
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss(); // Dismiss the dialog and stay on the page
+                    }
+                });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 }

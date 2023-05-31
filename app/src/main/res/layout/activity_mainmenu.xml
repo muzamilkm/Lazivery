@@ -37,6 +37,7 @@
             android:layout_below="@id/title_text_view"
             android:layout_marginTop="64dp"
             android:layout_centerHorizontal="true"
+            android:fontFamily="@font/poppinsl"
             android:onClick="onClick"/>
 
         <!-- Check Open Requests Button -->
@@ -50,21 +51,9 @@
             android:textSize="24sp"
             android:layout_below="@id/create_request_button"
             android:layout_marginTop="32dp"
+            android:fontFamily="@font/poppinsl"
             android:layout_centerHorizontal="true"/>
 
-        <!-- Check Current Request Status -->
-        <Button
-            android:id="@+id/current_status"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Check Active Request Status"
-            android:textColor="@android:color/white"
-            android:backgroundTint="@color/buttonbglight"
-            android:textSize="24sp"
-            android:layout_below="@id/check_open_requests_button"
-            android:layout_marginTop="32dp"
-            android:layout_centerHorizontal="true"
-            android:onClick="onClick"/>
 
         <!-- Edit Profile Section -->
         <ImageView
@@ -75,21 +64,8 @@
             android:contentDescription="Settings"
             android:layout_marginTop="32dp"
             android:layout_marginEnd="10dp"
-            android:layout_toLeftOf="@id/settings_icon"
             android:onClick="onClick"
             android:layout_alignParentEnd="true"/>
-
-        <!-- Settings Icon -->
-        <ImageView
-            android:id="@+id/settings_icon"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:src="@drawable/settings"
-            android:contentDescription="Settings"
-            android:layout_marginTop="32dp"
-            android:layout_marginRight="55dp"
-            android:layout_alignParentEnd="true"
-            android:onClick="onClick"/>
 
         <!-- Floating Action Button for Logout -->
         <com.google.android.material.floatingactionbutton.FloatingActionButton

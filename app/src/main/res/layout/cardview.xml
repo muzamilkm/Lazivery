@@ -31,7 +31,8 @@
             android:text="Location"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
             android:textStyle="bold"
-            android:textColor="@color/white"/>
+            android:textColor="@color/white"
+            android:fontFamily="@font/poppinsl"/>
 
         <TextView
             android:id="@+id/textview_payment"
@@ -40,7 +41,8 @@
             android:text="Offered payment"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
             android:textStyle="bold"
-            android:textColor="@color/white"/>
+            android:textColor="@color/white"
+            android:fontFamily="@font/poppinsl"/>
 
         <TextView
             android:id="@+id/textview_items"
@@ -49,7 +51,8 @@
             android:text="Items"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
             android:textStyle="bold"
-            android:textColor="@color/white"/>
+            android:textColor="@color/white"
+            android:fontFamily="@font/poppinsl"/>
 
         <TextView
             android:id="@+id/textview_instructions"
@@ -58,7 +61,8 @@
             android:text="Instructions"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
             android:textStyle="bold"
-            android:textColor="@color/white"/>
+            android:textColor="@color/white"
+            android:fontFamily="@font/poppinsl"/>
 
         <TextView
             android:id="@+id/textview_method"
@@ -67,15 +71,18 @@
             android:text="Payment Method"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
             android:textStyle="bold"
-            android:textColor="@color/white"/>
+            android:textColor="@color/white"
+            android:fontFamily="@font/poppinsl"/>
         <Button
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:text="Accept request"
             android:id="@+id/acceptreqbtn"
             android:layout_marginTop="20dp"
+            android:textColor="@color/white"
             android:backgroundTint="@color/buttonbglight"
-            android:layout_gravity="center"/>
+            android:layout_gravity="center"
+            android:fontFamily="@font/poppinsl"/>
 
 
 
