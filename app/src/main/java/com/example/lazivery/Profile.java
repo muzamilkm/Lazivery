@@ -58,11 +58,15 @@ public class Profile extends AppCompatActivity {
                                     @Override
                                     public void onSuccess(Void aVoid) {
 
+                                        boolean namevalid = true, emailvalid = true, phonevalid = true;
+
                                         if (!emailstr.isEmpty() && emailstr.contains("@")) {
                                             user.updateEmail(emailstr);
                                         }
-                                        else if (!emailstr.isEmpty())
+                                        else if (!emailstr.isEmpty()) {
                                             Toast.makeText(Profile.this, "New email is invalid", Toast.LENGTH_SHORT).show();
+                                            emailvalid = false;
+                                        }
                                         if (!passwordstr.isEmpty()) {
                                             user.updatePassword(passwordstr);
                                         }
@@ -73,29 +77,40 @@ public class Profile extends AppCompatActivity {
 
                                             userRef.child("phoneNumber").setValue(phonestr);
                                         }
-                                        else if (!phonestr.isEmpty())
+                                        else if (!phonestr.isEmpty()) {
                                             Toast.makeText(Profile.this, "New phone number is invalid", Toast.LENGTH_SHORT).show();
+                                            phonevalid = false;
+                                        }
 
                                         if (!namestr.isEmpty()) {
                                             char[] namearr = namestr.toCharArray();
+                                            int flag = 0;
                                             for (char c : namearr)
                                             {
                                                 if(Character.isDigit(c))
                                                 {
-                                                    Toast.makeText(Profile.this, "Invalid name", Toast.LENGTH_SHORT).show();
+                                                    flag = 1;
+                                                    break;
                                                 }
-                                                else{
-                                                    FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance("https://lazivery-default-rtdb.asia-southeast1.firebasedatabase.app");
-                                                    DatabaseReference userRef = firebaseDatabase.getReference("users").child(user.getUid());
+                                            }
+                                            if (flag == 0)
+                                            {
+                                                FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance("https://lazivery-default-rtdb.asia-southeast1.firebasedatabase.app");
+                                                DatabaseReference userRef = firebaseDatabase.getReference("users").child(user.getUid());
 
-                                                    userRef.child("fullName").setValue(namestr);
-                                                }
+                                                userRef.child("fullName").setValue(namestr);
+                                            }
+                                            else if (flag == 1)
+                                            {
+                                                Toast.makeText(Profile.this, "Name is invalid", Toast.LENGTH_SHORT).show();
+                                                namevalid = false;
                                             }
 
                                         }
-
-                                        Toast.makeText(Profile.this, "Information Updated!", Toast.LENGTH_SHORT).show();
-                                        finish();
+                                        if (emailvalid && namevalid && phonevalid) {
+                                            Toast.makeText(Profile.this, "Information Updated!", Toast.LENGTH_SHORT).show();
+                                            finish();
+                                        }
                                     }
                                 })
                                 .addOnFailureListener(new OnFailureListener() {
